@@ -1,0 +1,24 @@
+{
+  "name": "todo-tracker",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vuedx-typecheck . && vite build",
+    "lint": "eslint --fix --ext .js,.ts,.vue src"
+  },
+  "dependencies": {
+    "vue": "^3.0.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.0.3",
+    "@vue/compiler-sfc": "^3.0.5",
+    "@vuedx/typecheck": "^0.4.1",
+    "@vuedx/typescript-plugin-vue": "^0.4.1",
+    "eslint": "^7.17.0",
+    "eslint-config-vue-typescript-eslint": "^1.1.6",
+    "eslint-plugin-vue": "^7.4.0",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.3",
+    "vite": "^2.0.0-beta.2"
+  }
+}
