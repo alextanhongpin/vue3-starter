@@ -1,6 +1,11 @@
 <template>
   <form class="container" @submit.prevent>
-    <input class="input" type="text" placeholder="Enter todo" v-model="name" />
+    <input
+      class="input"
+      type="text"
+      placeholder="What do you want to do?"
+      v-model="name"
+    />
     <button class="button" @click="onSubmit">Submit</button>
   </form>
   <small class="footer">Press `Enter` to add</small>

@@ -9,6 +9,7 @@
       @todo:stop="$emit('todo:stop', todo.id)"
       @todo:pause="$emit('todo:pause', todo.id)"
       @todo:delete="$emit('todo:delete', todo.id)"
+      @todo:updateNote="updateNote"
     />
   </div>
 </template>
@@ -25,9 +26,18 @@ export default defineComponent({
   props: {
     todos: Array,
   },
-  emits: ["todo:start", "todo:stop", "todo:pause", "todo:delete"],
-  setup(props) {
-    return {};
+  emits: [
+    "todo:start",
+    "todo:stop",
+    "todo:pause",
+    "todo:delete",
+    "todo:updateNote",
+  ],
+  setup(props, { emit }) {
+    const updateNote = (todoId: string, note: string) => {
+      emit("todo:updateNote", todoId, note);
+    };
+    return { updateNote };
   },
 });
 </script>

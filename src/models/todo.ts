@@ -16,6 +16,7 @@ export default class TodoModel {
     return {
       id: Date.now(),
       name,
+      note: "",
       createdAt: new Date(),
       status: TodoStatus.Idle,
       startedAt: null,
@@ -64,5 +65,12 @@ export default class TodoModel {
     todo.startedAt = json.startedAt ? new Date(json.startedAt) : null;
     todo.completedAt = json.completedAt ? new Date(json.completedAt) : null;
     return todo;
+  }
+
+  static updateNote(todo: Todo, note: string) {
+    return {
+      ...todo,
+      note,
+    };
   }
 }

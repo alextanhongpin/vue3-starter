@@ -10,6 +10,7 @@
     @todo:stop="onComplete"
     @todo:pause="onPause"
     @todo:delete="onDelete"
+    @todo:updateNote="onUpdateNote"
   />
 </template>
 
@@ -66,8 +67,21 @@ export default defineComponent({
       if (!proceed) return;
       todos.value = todos.value.filter((todo: Todo) => todo.id !== todoId);
     };
+    const onUpdateNote = (todoId: string, note: string) => {
+      todos.value = todos.value.map((todo: Todo) =>
+        todo.id === todoId ? TodoModel.updateNote(todo, note) : todo
+      );
+    };
 
-    return { todos, onSubmit, onStart, onPause, onComplete, onDelete };
+    return {
+      todos,
+      onSubmit,
+      onStart,
+      onPause,
+      onComplete,
+      onDelete,
+      onUpdateNote,
+    };
   },
 });
 </script>

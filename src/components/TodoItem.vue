@@ -13,6 +13,13 @@
         :offset="todo.elapsedMs"
       />
       <div class="tag-container">Created {{ createdAt }}</div>
+      <textarea
+        class="note"
+        placeholder="Add notes"
+        v-model="note"
+        @blur="onBlur"
+      >
+      </textarea>
     </div>
 
     <div class="todo-item-footer">
@@ -41,7 +48,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, defineComponent, computed } from "vue";
+import { onMounted, defineComponent, computed, ref } from "vue";
 
 // Models.
 import { formatDate } from "../models/date";
@@ -66,8 +73,16 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["todo:start", "todo:stop", "todo:pause", "todo:delete"],
-  setup(props) {
+  emits: [
+    "todo:start",
+    "todo:stop",
+    "todo:pause",
+    "todo:delete",
+    "todo:updateNote",
+  ],
+  setup(props, { emit }) {
+    const note = ref(props.todo.note);
+
     // Computed statuses.
     const stop = computed(() => props.todo.status === TodoStatus.Completed);
     const idle = computed(() => props.todo.status === TodoStatus.Idle);
@@ -84,6 +99,10 @@ export default defineComponent({
     );
     const createdAt = computed(() => formatDate(props.todo.createdAt));
 
+    const onBlur = () => {
+      emit("todo:updateNote", props.todo.id, note.value);
+    };
+
     return {
       stop,
       idle,
@@ -91,6 +110,8 @@ export default defineComponent({
       play,
       started,
       createdAt,
+      note,
+      onBlur,
     };
   },
 });
@@ -101,7 +122,7 @@ export default defineComponent({
   display: grid;
   grid-template-columns: max-content 1fr max-content;
   grid-column-gap: 1rem;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .stop {
@@ -131,5 +152,13 @@ export default defineComponent({
   font-size: small;
   font-family: "Courier New";
   color: #666;
+}
+
+.note {
+  width: 100%;
+  appearance: none;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 0.5rem;
 }
 </style>
