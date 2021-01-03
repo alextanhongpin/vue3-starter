@@ -7,7 +7,7 @@
       <Timer
         :start="todo.startedAt"
         :end="todo.completedAt"
-        :play="play"
+        :play="false || play"
         :offset="todo.elapsedMs"
       />
       <div class="tag-container">Created {{ createdAt }}</div>

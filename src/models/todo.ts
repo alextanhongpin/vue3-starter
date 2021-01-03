@@ -38,16 +38,18 @@ export default class TodoModel {
     return {
       ...todo,
       status: TodoStatus.Idle,
+      startedAt: new Date(),
       elapsedMs: todo.elapsedMs + (elapsedMs - (elapsedMs % 1000)),
     };
   }
 
   static stop(todo: Todo) {
-    const elapsedMs = new Date(todo.completedAt - todo.startedAt).getTime();
+    const completedAt = new Date();
+    const elapsedMs = new Date(completedAt - todo.startedAt).getTime();
     return {
       ...todo,
       status: TodoStatus.Completed,
-      completedAt: new Date(),
+      completedAt,
       elapsedMs: todo.elapsedMs + (elapsedMs - (elapsedMs % 1000)),
     };
   }

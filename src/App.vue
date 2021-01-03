@@ -60,6 +60,10 @@ export default defineComponent({
     };
 
     const onDelete = (todoId) => {
+      const proceed = window.confirm(
+        "Are you sure you want to delete this todo? This process is irreversible."
+      );
+      if (!proceed) return;
       todos.value = todos.value.filter((todo: Todo) => todo.id !== todoId);
     };
 

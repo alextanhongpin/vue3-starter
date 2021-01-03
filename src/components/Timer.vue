@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref, defineComponent, watch } from "vue";
+import { onMounted, ref, defineComponent, watch, onBeforeUnmount } from "vue";
 
 export default defineComponent({
   name: "Timer",
@@ -25,9 +25,8 @@ export default defineComponent({
 
   setup(props) {
     const timer = ref(-1);
-    const elapsed = ref(buildTimer());
 
-    function buildTimer(run = false) {
+    const buildTimer = (run = false) => {
       const ms = run
         ? (props.end ?? Date.now()) - props.start + props.offset
         : props.offset;
@@ -37,24 +36,29 @@ export default defineComponent({
       return [hours, minutes, seconds]
         .map((n) => Math.floor(n).toString().padStart(2, "0"))
         .join(":");
-    }
+    };
+    const elapsed = ref(buildTimer());
 
-    function updateTimer() {
-      timer.value = window.requestAnimationFrame(updateTimer);
-      elapsed.value = buildTimer(true);
-    }
+    const tick = () => {
+      timer.value && window.cancelAnimationFrame(timer.value);
+      timer.value = window.requestAnimationFrame(function updateTimer() {
+        elapsed.value = buildTimer(props.play);
+        if (props.play) {
+          window.requestAnimationFrame(updateTimer);
+        }
+      });
+    };
 
     onMounted(() => {
-      watch(props, () => {
-        window.cancelAnimationFrame(timer.value);
-        if (props.play) {
-          updateTimer();
-        }
+      tick();
+    });
 
-        return () => {
-          window.cancelAnimationFrame(timer.value);
-        };
-      });
+    watch(props, () => {
+      tick();
+    });
+
+    onBeforeUnmount(() => {
+      window.cancelAnimationFrame(timer.value);
     });
 
     return {
