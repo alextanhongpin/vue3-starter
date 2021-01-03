@@ -2,12 +2,14 @@
   <div class="todo-item">
     <Calendar v-if="!!todo.createdAt" :value="todo.createdAt"></Calendar>
 
-    <div :class="{ stop }">
-      {{ todo.name }}
+    <div>
+      <span :class="{ stop }">
+        {{ todo.name }}
+      </span>
       <Timer
         :start="todo.startedAt"
         :end="todo.completedAt"
-        :play="false || play"
+        :play="play"
         :offset="todo.elapsedMs"
       />
       <div class="tag-container">Created {{ createdAt }}</div>
